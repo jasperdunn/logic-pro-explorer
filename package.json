@@ -1,0 +1,27 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "description": "A template for Node with TypeScript.",
+  "main": "index.js",
+  "author": "Jasper Dunn <jasperdunn93@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "chokidar src/*.ts --initial --silent -c \"tsc && NODE_PATH=dist node dist/index.js\"",
+    "preinstall": "npx only-allow pnpm"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "@typescript-eslint/eslint-plugin": "^5.58.0",
+    "@typescript-eslint/parser": "^5.58.0",
+    "chokidar-cli": "^3.0.0",
+    "eslint": "^8.38.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "typescript": "^5.0.4"
+  },
+  "engines": {
+    "node": "18.16.0",
+    "pnpm": "8.2.0"
+  }
+}

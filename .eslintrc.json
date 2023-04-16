@@ -1,0 +1,28 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "plugins": ["@typescript-eslint"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:import/recommended"
+  ],
+  "rules": {
+    "no-shadow": "error",
+    "no-bitwise": "error",
+    "no-else-return": "error",
+    "no-lonely-if": "error",
+    "prefer-arrow-callback": "error",
+    "prefer-const": "error",
+    "prefer-template": "error",
+    "no-console": "warn",
+    "no-alert": "error",
+    "no-unexpected-multiline": "error",
+    "@typescript-eslint/explicit-function-return-type": [
+      "error",
+      {
+        "allowExpressions": true
+      }
+    ]
+  }
+}
