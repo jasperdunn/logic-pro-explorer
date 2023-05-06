@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node scripts/start.mjs",
     "build": "tsc",
-    "test": "vitest",
+    "test": "pnpm build && vitest",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {

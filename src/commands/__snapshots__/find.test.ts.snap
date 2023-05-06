@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`find command > should display the help message 1`] = `
+"Usage: logic-pro-explorer find [options]
+
+Find projects that are using the selected components.
+
+Options:
+  -h, --help  display help for command
+"
+`;

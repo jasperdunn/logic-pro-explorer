@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tree command > should display the help message 1`] = `
+"Usage: logic-pro-explorer tree [options]
+
+Displays a tree of Logic projects or components.
+
+Options:
+  -t, --type <type>                 The type of files to scan for (choices:
+                                    \\"project\\", \\"component\\", default: \\"project\\")
+  -p, --project-directory <path>    The directory to scan for Logic projects,
+                                    the default can be set in config. (default:
+                                    /Volumes/data-ssd/audio/Logic/)
+  -c, --component-directory <path>  The directory to scan for components, the
+                                    default can be set in config. (default:
+                                    /Library/Audio/Plug-Ins/Components/)
+  -l, --limit <number>              Limits the number of files to scan.
+  -h, --help                        display help for command
+"
+`;

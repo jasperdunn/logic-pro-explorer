@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`help command > should display the help message 1`] = `
+"Usage: logic-pro-explorer [options] [command]
+
+A CLI tool to query and analyze .logicx project files on your system.
+
+Options:
+  -v, --version     Displays the version number.
+  -h, --help        Displays this help message.
+
+Commands:
+  config [options]  Set configuration options.
+  tree [options]    Displays a tree of Logic projects or components.
+  find              Find projects that are using the selected components.
+  info [options]    Display information about the selected project or
+                    component.
+  help [command]    Displays help for a specific command.
+"
+`;

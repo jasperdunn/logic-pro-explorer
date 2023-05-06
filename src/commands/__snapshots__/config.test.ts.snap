@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`config command > should display the help message 1`] = `
+"Usage: logic-pro-explorer config [options]
+
+Set configuration options.
+
+Options:
+  -p, --project-directory <path>    Set the directory to scan for Logic
+                                    projects.
+  -c, --component-directory <path>  Set the directory to scan for components.
+  -r, --reset                       Reset the configuration to the default
+                                    values.
+  -h, --help                        display help for command
+"
+`;

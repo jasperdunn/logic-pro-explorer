@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`info command > should display the help message 1`] = `
+"Usage: logic-pro-explorer info [options]
+
+Display information about the selected project or component.
+
+Options:
+  -t, --type <type>  Display information about the selected type. (choices:
+                     \\"project\\", \\"component\\", default: \\"project\\")
+  -h, --help         display help for command
+"
+`;

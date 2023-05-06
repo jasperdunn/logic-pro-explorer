@@ -1,5 +1,12 @@
 import chalk from 'chalk'
+import { runCommand } from '../cli-test-helpers'
 import { buildTree, renderTree, TreeSymbol } from './tree'
+
+describe('tree command', () => {
+  test('should display the help message', () => {
+    expect(runCommand('tree -h')).toMatchSnapshot()
+  })
+})
 
 describe('buildTree', () => {
   it('builds an empty tree', () => {
