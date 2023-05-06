@@ -3,6 +3,7 @@ node_modules/
 
 # artifacts
 dist/
+bin/
 
 # misc
 .DS_Store

@@ -1,27 +1,42 @@
 {
-  "name": "example",
+  "name": "logic-pro-explorer",
   "version": "0.0.0",
-  "description": "A template for Node with TypeScript.",
+  "description": "A CLI tool to query and analyze .logicx project files on your system.",
   "main": "index.js",
   "author": "Jasper Dunn <jasperdunn93@gmail.com>",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "chokidar src/*.ts --initial --silent -c \"tsc && NODE_PATH=dist node dist/index.js\"",
+    "start": "node scripts/start.mjs",
+    "build": "tsc",
+    "test": "vitest",
     "preinstall": "npx only-allow pnpm"
   },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^10.0.1",
+    "inquirer": "8",
+    "ora": "^5.4.1",
+    "plist": "^3.0.6"
+  },
   "devDependencies": {
-    "@types/node": "^18.15.11",
-    "@typescript-eslint/eslint-plugin": "^5.58.0",
-    "@typescript-eslint/parser": "^5.58.0",
+    "@commander-js/extra-typings": "^10.0.3",
+    "@types/inquirer": "^8.2.6",
+    "@types/node": "^18.16.0",
+    "@types/plist": "^3.0.2",
+    "@types/prompts": "^2.4.4",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
     "chokidar-cli": "^3.0.0",
-    "eslint": "^8.38.0",
+    "eslint": "^8.39.0",
     "eslint-config-prettier": "^8.8.0",
+    "eslint-import-resolver-typescript": "^3.5.5",
     "eslint-plugin-import": "^2.27.5",
-    "typescript": "^5.0.4"
+    "typescript": "^5.0.4",
+    "vitest": "^0.30.1"
   },
   "engines": {
     "node": "18.16.0",
-    "pnpm": "8.2.0"
+    "pnpm": "8.3.1"
   }
 }

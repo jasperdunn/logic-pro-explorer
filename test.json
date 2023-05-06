@@ -1,0 +1,33 @@
+{
+  "AudioComponents": [
+    {
+      "description": "Vinyl",
+      "factoryFunction": "AUPluginFactory",
+      "manufacturer": "iZtp",
+      "name": "iZotope: Vinyl",
+      "sandboxSafe": true,
+      "subtype": "Vnyl",
+      "tags": [],
+      "type": "aufx",
+      "version": 68352
+    }
+  ],
+  "BuildMachineOSBuild": "19H512",
+  "CFBundleDevelopmentRegion": "English",
+  "CFBundleExecutable": "PluginHooksAU",
+  "CFBundleGetInfoString": "1.11.0, Copyright © 2001-2022 iZotope, Inc.",
+  "CFBundleIconFile": "",
+  "CFBundleIdentifier": "com.izotope.AU.Vinyl",
+  "CFBundleInfoDictionaryVersion": "6.0",
+  "CFBundleName": "Vinyl",
+  "CFBundlePackageType": "BNDL",
+  "CFBundleShortVersionString": "1.11.0",
+  "CFBundleSignature": "iZtp",
+  "CFBundleVersion": "1.11.0.210",
+  "CSResourcesFileMapped": true,
+  "DTSDKBuild": "19H512",
+  "DTSDKName": "macosx",
+  "DTXcode": "0122",
+  "DTXcodeBuild": "12B45b",
+  "IZSHORTNAME": ""
+}

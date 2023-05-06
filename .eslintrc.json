@@ -4,25 +4,57 @@
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:import/recommended"
+    "plugin:import/recommended",
+    "plugin:import/typescript",
+    "prettier"
   ],
   "rules": {
-    "no-shadow": "error",
+    "eqeqeq": "error",
+    "no-restricted-globals": "error",
     "no-bitwise": "error",
-    "no-else-return": "error",
+    "no-else-return": [
+      "error",
+      {
+        "allowElseIf": false
+      }
+    ],
     "no-lonely-if": "error",
     "prefer-arrow-callback": "error",
     "prefer-const": "error",
     "prefer-template": "error",
-    "no-console": "warn",
     "no-alert": "error",
     "no-unexpected-multiline": "error",
+    "import/order": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [
+          {
+            "name": "commander",
+            "message": "Please use @commander-js/extra-typings instead."
+          }
+        ]
+      }
+    ],
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
         "allowExpressions": true
       }
-    ]
+    ],
+    "@typescript-eslint/no-shadow": "error"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [".ts"]
+      },
+      "typescript": {
+        "alwaysTryTypes": true
+      }
+    }
+  },
+  "env": {
+    "node": true
   }
 }
