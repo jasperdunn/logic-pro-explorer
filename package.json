@@ -7,6 +7,9 @@
   "license": "MIT",
   "private": true,
   "type": "module",
+  "bin": {
+    "logic-pro-explorer": "./dist/index.js"
+  },
   "scripts": {
     "start": "node scripts/start.mjs",
     "build": "tsc",

@@ -16,5 +16,11 @@
     "target": "es2019",
     "types": ["vitest/globals"]
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test-data.ts",
+    "src/cli-test-helpers.ts",
+    "src/types.ts"
+  ]
 }
