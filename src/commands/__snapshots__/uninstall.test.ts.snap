@@ -1,0 +1,6 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`uninstall command > should close the app if the user declines 1`] = `
+"? Are you sure you want to uninstall logic-pro-explorer? (Y/n) [63D[63C[2K[G? Are you sure you want to uninstall logic-pro-explorer? (Y/n) n[64D[64C[2K[G? Are you sure you want to uninstall logic-pro-explorer? No[59D[59C
+"
+`;

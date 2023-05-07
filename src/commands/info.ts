@@ -1,13 +1,14 @@
-import fs from 'fs'
+import fs from 'fs/promises'
 import { Option, createCommand } from '@commander-js/extra-typings'
-import { prompt } from 'inquirer'
+import inquirer from 'inquirer'
 import ora from 'ora'
 import chalk from 'chalk'
 import plist from 'plist'
-import { FileType, fileTypes, getFileExtensionFromType, getFilePaths } from '../utils/file'
-import { plural } from '../utils/string'
-import { getErrorMessage } from '../utils/error'
-import { config } from './config'
+import type { FileType } from '../utils/file.js'
+import { fileTypes, getFileExtensionFromType, getFilePaths } from '../utils/file.js'
+import { plural } from '../utils/string.js'
+import { getErrorMessage } from '../utils/error.js'
+import { config } from './config.js'
 
 export const infoCommand = createCommand('info')
   .description('Display information about the selected project or component.')
@@ -24,12 +25,12 @@ export const infoCommand = createCommand('info')
       })
   )
   .action(async ({ type }) => {
-    printComponentInfo(type as FileType)
+    await printComponentInfo(type as FileType)
   })
 
 async function printComponentInfo(fileType: FileType): Promise<void> {
   const spinner = ora(`Loading ${fileType}s...`).start()
-  const componentPaths = getFilePaths(
+  const componentPaths = await getFilePaths(
     getFileExtensionFromType(fileType),
     config.directory[fileType]
   )
@@ -44,7 +45,7 @@ async function printComponentInfo(fileType: FileType): Promise<void> {
   )
 
   try {
-    const response = await prompt<{
+    const response = await inquirer.prompt<{
       components: string[]
     }>([
       {
@@ -58,11 +59,11 @@ async function printComponentInfo(fileType: FileType): Promise<void> {
       },
     ])
 
-    console.log(
-      response.components
-        .map((component) => renderComponent(getComponentInfo(component)))
-        .join('\n\n')
+    const components = await Promise.all(
+      response.components.map((component) => getComponentInfo(component))
     )
+
+    console.log(components.map((component) => renderComponent(component)).join('\n\n'))
   } catch (error) {
     spinner.fail(getErrorMessage(error))
   }
@@ -81,10 +82,10 @@ Version: ${component.version}
 Type: ${component.type}`
 }
 
-function getComponentInfo(componentPath: string): AUComponentInfo {
+async function getComponentInfo(componentPath: string): Promise<AUComponentInfo> {
   const unknown = 'Unknown'
   const plistPath = `${componentPath}/Contents/Info.plist`
-  const data = fs.readFileSync(plistPath)
+  const data = await fs.readFile(plistPath, { encoding: 'utf-8' })
 
   const { AudioComponents, CFBundleName, CFBundleShortVersionString } = plist.parse(
     data.toString()

@@ -1,7 +1,7 @@
 import { spawn } from 'child_process'
 
 const args = process.argv.slice(2)
-const command = `chokidar src/*.ts --initial --silent -c "tsc && node dist/src/index.js ${args.join(
+const command = `chokidar src/*.ts --initial --silent -c "tsc && node dist/index.js ${args.join(
   ' '
 )}"`
 

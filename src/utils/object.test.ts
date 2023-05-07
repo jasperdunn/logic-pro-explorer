@@ -1,5 +1,5 @@
-import { iterativeMerge } from './object'
-import { iterativeMergeCases } from './object.test-data'
+import { iterativeMerge } from './object.js'
+import { iterativeMergeCases } from './object.test-data.js'
 
 describe('iterativeMerge', () => {
   test.each(iterativeMergeCases)('$description', ({ target, source, expected }) => {

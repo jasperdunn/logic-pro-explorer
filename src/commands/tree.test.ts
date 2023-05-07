@@ -1,6 +1,6 @@
 import chalk from 'chalk'
-import { runCommand } from '../cli-test-helpers'
-import { buildTree, renderTree, TreeSymbol } from './tree'
+import { runCommand } from '../cli-test-helpers.js'
+import { buildTree, renderTree, TreeSymbol } from './tree.js'
 
 describe('tree command', () => {
   test('should display the help message', () => {

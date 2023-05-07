@@ -1,9 +1,14 @@
 {
   "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
   "plugins": ["@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/strict",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "prettier"
@@ -25,17 +30,29 @@
     "no-alert": "error",
     "no-unexpected-multiline": "error",
     "import/order": "error",
-    "no-restricted-imports": [
+    "no-return-await": "error",
+    "require-await": "error",
+    "@typescript-eslint/prefer-nullish-coalescing": "off",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/consistent-type-definitions": ["error", "type"],
+    "@typescript-eslint/no-floating-promises": "error",
+    "@typescript-eslint/no-restricted-imports": [
       "error",
       {
         "paths": [
           {
             "name": "commander",
-            "message": "Please use @commander-js/extra-typings instead."
+            "message": "Use @commander-js/extra-typings for better type support."
+          },
+          {
+            "name": "fs",
+            "message": "Use fs/promises instead for async support.",
+            "allowTypeImports": true
           }
         ]
       }
     ],
+    "@typescript-eslint/consistent-type-imports": "error",
     "@typescript-eslint/explicit-function-return-type": [
       "error",
       {
@@ -56,5 +73,6 @@
   },
   "env": {
     "node": true
-  }
+  },
+  "ignorePatterns": ["dist", "node_modules", "scripts", "vitest.config.ts"]
 }

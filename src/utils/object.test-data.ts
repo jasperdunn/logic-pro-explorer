@@ -1,5 +1,5 @@
-import { iterativeMerge } from '../utils/object'
-import { FunctionTestCase, DeepPartial } from '../types'
+import type { iterativeMerge } from '../utils/object.js'
+import type { FunctionTestCase, DeepPartial } from '../types.js'
 
 type Target = {
   a: number

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`help command > should display the help message 1`] = `
-"Usage: logic-pro-explorer [options] [command]
+"Usage: logic-pro-explorer [command] [options]
 
 A CLI tool to query and analyze .logicx project files on your system.
 
@@ -15,6 +15,7 @@ Commands:
   find              Find projects that are using the selected components.
   info [options]    Display information about the selected project or
                     component.
-  help [command]    Displays help for a specific command.
+  uninstall         Remove logic-pro-explorer from your computer.
+  help              Displays this help message.
 "
 `;

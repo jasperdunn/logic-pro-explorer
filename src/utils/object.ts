@@ -1,4 +1,7 @@
-import { DeepPartial } from '../types'
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+import type { DeepPartial } from '../types.js'
 
 /**
  * Merge deeply nested properties of two objects.
@@ -9,7 +12,7 @@ export function iterativeMerge<T extends object, S extends DeepPartial<T>>(
   target: T,
   source: S
 ): T {
-  const merged: T = JSON.parse(JSON.stringify(target))
+  const merged = JSON.parse(JSON.stringify(target)) as T
   const stack: StackItem[] = [{ target: merged, source: source }]
 
   while (stack.length > 0) {

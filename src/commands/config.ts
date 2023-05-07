@@ -1,35 +1,37 @@
 import os from 'os'
-import fs from 'fs'
+import fs from 'fs/promises'
 import path from 'path'
 import { createCommand } from '@commander-js/extra-typings'
-import { name as packageName } from '../../package.json'
-import { getErrorMessage } from '../utils/error'
-import { iterativeMerge } from '../utils/object'
-import { DeepPartial } from '../types'
-import { FileType } from '../utils/file'
+import { getErrorMessage } from '../utils/error.js'
+import { iterativeMerge } from '../utils/object.js'
+import type { DeepPartial } from '../types.js'
+import type { FileType } from '../utils/file.js'
+import { doesPathExist, packageProperties } from '../utils/file.js'
+
+const { name } = packageProperties
 
 export const projectDirectoryFlags = '-p, --project-directory <path>'
 export const componentDirectoryFlags = '-c, --component-directory <path>'
 
-const configPath = `/Users/${os.userInfo().username}/.${packageName}/config.json`
+export const configPath = `/Users/${os.userInfo().username}/.${name}/config.json`
 const defaultProjectDirectory = `/Users/${os.userInfo().username}/Music/Logic/`
 const defaultComponentDirectory = '/Library/Audio/Plug-Ins/Components/'
 
-export const config = getConfig()
+export const config = await getConfig()
 
 export const configCommand = createCommand('config')
   .description('Set configuration options.')
   .option(projectDirectoryFlags, 'Set the directory to scan for Logic projects.')
   .option(componentDirectoryFlags, 'Set the directory to scan for components.')
   .option('-r, --reset', 'Reset the configuration to the default values.')
-  .action(({ projectDirectory, componentDirectory, reset }) => {
+  .action(async ({ projectDirectory, componentDirectory, reset }) => {
     if (reset) {
-      initializeConfig({ reset: true })
+      await initializeConfig({ reset: true })
       return
     }
 
     if (projectDirectory || componentDirectory) {
-      updateConfig({
+      await updateConfig({
         directory: {
           component: componentDirectory,
           project: projectDirectory,
@@ -45,15 +47,15 @@ type Config = {
 type InitializeConfigOptions = {
   reset: true
 }
-function initializeConfig(options?: InitializeConfigOptions): void {
+async function initializeConfig(options?: InitializeConfigOptions): Promise<void> {
   try {
-    if (!options?.reset && fs.existsSync(configPath)) {
+    if (!options?.reset && (await doesPathExist(configPath))) {
       return
     }
 
     const configDirectoryPath = path.dirname(configPath)
-    if (!fs.existsSync(configDirectoryPath)) {
-      fs.mkdirSync(configDirectoryPath)
+    if (!(await doesPathExist(configDirectoryPath))) {
+      await fs.mkdir(configDirectoryPath)
     }
 
     const configData: Config = {
@@ -63,7 +65,7 @@ function initializeConfig(options?: InitializeConfigOptions): void {
       },
     }
 
-    fs.writeFileSync(configPath, JSON.stringify(configData, null, 2))
+    await fs.writeFile(configPath, JSON.stringify(configData, null, 2))
   } catch (error) {
     throw new Error(
       `An error occurred while initializing the config file.\n${getErrorMessage(error)}`
@@ -71,20 +73,33 @@ function initializeConfig(options?: InitializeConfigOptions): void {
   }
 }
 
-function getConfig(): Config {
+async function getConfig(): Promise<Config> {
   try {
-    initializeConfig()
+    await initializeConfig()
 
-    return JSON.parse(fs.readFileSync(configPath, 'utf-8')) as Config
+    return JSON.parse(await fs.readFile(configPath, { encoding: 'utf-8' })) as Config
   } catch (error) {
     throw new Error(`An error occurred while reading the config file.\n${getErrorMessage(error)}`)
   }
 }
 
-function updateConfig(partialConfig: DeepPartial<Config>): void {
+export async function updateConfig(partialConfig: DeepPartial<Config>): Promise<void> {
   try {
-    fs.writeFileSync(configPath, JSON.stringify(iterativeMerge(config, partialConfig), null, 2))
+    await fs.writeFile(configPath, JSON.stringify(iterativeMerge(config, partialConfig), null, 2), {
+      encoding: 'utf-8',
+    })
   } catch (error) {
     throw new Error(`An error occurred while updating the config file.\n${getErrorMessage(error)}`)
+  }
+}
+
+export async function removeConfig(): Promise<void> {
+  try {
+    await fs.rm(path.dirname(configPath), {
+      force: true,
+      recursive: true,
+    })
+  } catch (error) {
+    throw new Error(`An error occurred while removing the config file.\n${getErrorMessage(error)}`)
   }
 }

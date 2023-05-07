@@ -2,10 +2,11 @@ import path from 'path'
 import chalk from 'chalk'
 import { createCommand, Option } from '@commander-js/extra-typings'
 import ora from 'ora'
-import { FileType, fileTypes, getFileExtensionFromType, getFilePaths } from '../utils/file'
-import { plural } from '../utils/string'
-import { getErrorMessage } from '../utils/error'
-import { componentDirectoryFlags, config, projectDirectoryFlags } from './config'
+import type { FileType } from '../utils/file.js'
+import { fileTypes, getFileExtensionFromType, getFilePaths } from '../utils/file.js'
+import { plural } from '../utils/string.js'
+import { getErrorMessage } from '../utils/error.js'
+import { componentDirectoryFlags, config, projectDirectoryFlags } from './config.js'
 
 export const treeCommand = createCommand('tree')
   .description('Displays a tree of Logic projects or components.')
@@ -44,24 +45,24 @@ export const treeCommand = createCommand('tree')
       return parsed
     })
   )
-  .action(({ type, componentDirectory, projectDirectory, limit }) => {
+  .action(async ({ type, componentDirectory, projectDirectory, limit }) => {
     switch (type as FileType) {
       case 'project':
-        scan('project', projectDirectory, limit)
+        await scan('project', projectDirectory, limit)
         return
 
       case 'component':
-        scan('component', componentDirectory, limit)
+        await scan('component', componentDirectory, limit)
         return
     }
   })
 
-function scan(type: FileType, directory: string, limit?: number): void {
+async function scan(type: FileType, directory: string, limit?: number): Promise<void> {
   const spinner = ora(`Loading ${type}s...`).start()
 
   try {
     const extension = getFileExtensionFromType(type)
-    const filePaths = getFilePaths(extension, directory, limit)
+    const filePaths = await getFilePaths(extension, directory, limit)
 
     if (filePaths.length === 0) {
       spinner.info(chalk.blue(`No "${type}" files were found in "${directory}"`))
@@ -157,7 +158,7 @@ export function renderTree(node: Node): string {
    * Using a buffer is more efficient than printing to stdout immediately, or using string concatenation.
    */
   const buffer: string[] = []
-  const stack: Array<TreeBranch> = [{ node, indent: '', depth: 0 }]
+  const stack: TreeBranch[] = [{ node, indent: '', depth: 0 }]
 
   while (stack.length > 0) {
     const currentBranch = stack.pop()

@@ -52,6 +52,8 @@ type RecordFromArgs<Args extends string[], Func extends FunctionType> = {
   ? UnionToIntersection<R>
   : never
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (k: infer I) => void
+type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
+  k: infer I
+) => void
   ? I
   : never

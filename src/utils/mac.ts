@@ -1,10 +1,10 @@
-import { lstatSync } from 'fs'
+import { lstat } from 'fs/promises'
 import { execFileSync } from 'child_process'
-import { ErrorCode, errorMessage, isErrorCode } from './error'
+import { ErrorCode, errorMessage, isErrorCode } from './error.js'
 
-export function isFinderAlias(directoryPath: string): boolean {
+export async function isFinderAlias(directoryPath: string): Promise<boolean> {
   try {
-    if (!lstatSync(directoryPath).isFile()) {
+    if (!(await lstat(directoryPath)).isFile()) {
       return false
     }
 
