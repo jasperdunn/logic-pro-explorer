@@ -13,9 +13,6 @@ export type DeepPartial<T> = {
   [P in keyof T]?: DeepPartial<T[P]>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- used for function types
-type FunctionType = (...args: any[]) => any
-
 /**
  * A mapped type that creates a test case for a function.
  *
@@ -25,7 +22,7 @@ type FunctionType = (...args: any[]) => any
  * // { description: string, a: number, b: string, expected: number }
  * ```
  */
-export type FunctionTestCase<Args extends string[], Func extends FunctionType> = {
+export type FunctionTestCase<Func extends FunctionType, Args extends string[]> = {
   description: string
   expected: ReturnType<Func>
 } & RecordFromArgs<Args, Func>
@@ -42,18 +39,28 @@ export type FunctionTestCase<Args extends string[], Func extends FunctionType> =
  *
  * type MyRecord = RecordFromArgs<['args'], (args: { a: number, b: string }) => number>
  * // { args: { a: number, b: string } }
+ *
+ * type MyRecord = RecordFromArgs<['a', 'b'], (a: number, b?: string) => number>
+ * // { a: number, b?: string }
  * ```
  */
 type RecordFromArgs<Args extends string[], Func extends FunctionType> = {
   [K in keyof Args]: K extends keyof Parameters<Func>
-    ? { [P in Args[K]]: Parameters<Func>[K] }
+    ? IsKeyOptional<Parameters<Func>, K> extends true
+      ? { [P in Args[K]]?: Parameters<Func>[K] }
+      : { [P in Args[K]]: Parameters<Func>[K] }
     : never
 }[number] extends infer R
   ? UnionToIntersection<R>
   : never
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type FunctionType = (...args: any[]) => any
 
 type UnionToIntersection<U> = (U extends unknown ? (k: U) => void : never) extends (
   k: infer I
 ) => void
   ? I
   : never
+
+type IsKeyOptional<T, K extends keyof T> = object extends { [P in K]: T[P] } ? true : false

@@ -9,8 +9,8 @@ type Target = {
 type Source = DeepPartial<Target>
 
 export const iterativeMergeCases: FunctionTestCase<
-  ['target', 'source'],
-  typeof iterativeMerge<Target, Source>
+  typeof iterativeMerge<Target, Source>,
+  ['target', 'source']
 >[] = [
   {
     description: 'should merge two objects',
@@ -25,7 +25,7 @@ export const iterativeMergeCases: FunctionTestCase<
     expected: { a: 1, b: '2', c: { d: 1, e: 2 } },
   },
   {
-    description: 'does not merge arrays',
+    description: 'does not merge arrays, uses the source array',
     target: { a: 1, b: '1', c: [1, 2, 3] },
     source: { b: '2', c: [4, 5, 6] },
     expected: { a: 1, b: '2', c: [4, 5, 6] },

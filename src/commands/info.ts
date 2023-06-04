@@ -25,45 +25,59 @@ export const infoCommand = createCommand('info')
       })
   )
   .action(async ({ type }) => {
-    await printComponentInfo(type as FileType)
+    await printInfo(type as FileType)
   })
 
-async function printComponentInfo(fileType: FileType): Promise<void> {
+async function printInfo(fileType: FileType): Promise<void> {
   const spinner = ora(`Loading ${fileType}s...`).start()
-  const componentPaths = await getFilePaths(
-    getFileExtensionFromType(fileType),
-    config.directory[fileType]
-  )
-
-  if (componentPaths.length === 0) {
-    spinner.fail('No components found.')
-    return
-  }
-
-  spinner.succeed(
-    chalk.green(`Found ${componentPaths.length} ${plural(componentPaths.length, 'component')}.`)
-  )
 
   try {
-    const response = await inquirer.prompt<{
-      components: string[]
-    }>([
-      {
-        type: 'checkbox',
-        name: 'components',
-        message: 'Select components to view their information.',
-        choices: componentPaths.map((path) => ({
-          name: path,
-          value: path,
-        })),
-      },
-    ])
+    switch (fileType) {
+      case 'component':
+        {
+          const filePaths = await getFilePaths(
+            getFileExtensionFromType(fileType),
+            config.directory[fileType]
+          )
 
-    const components = await Promise.all(
-      response.components.map((component) => getComponentInfo(component))
-    )
+          if (filePaths.length === 0) {
+            spinner.fail(`No ${fileType}s found.`)
+            return
+          }
 
-    console.log(components.map((component) => renderComponent(component)).join('\n\n'))
+          spinner.succeed(
+            chalk.green(`Found ${filePaths.length} ${plural(filePaths.length, 'component')}.`)
+          )
+
+          const response = await inquirer.prompt<{
+            files: string[]
+          }>([
+            {
+              type: 'checkbox',
+              name: 'files',
+              message: `Select ${fileType}s to view their information.`,
+              choices: filePaths.map((path) => ({
+                name: path,
+                value: path,
+              })),
+            },
+          ])
+
+          const files = await Promise.all(
+            response.files.map((component) => getComponentInfo(component))
+          )
+
+          console.log(files.map((file) => renderComponent(file)).join('\n\n'))
+        }
+        break
+
+      case 'project': {
+        spinner.succeed()
+        const unknownBinaryPath = `/Volumes/data-ssd/audio/Logic/discondition/bounce/20200523-bounce.logicx/Alternatives/000/ProjectData`
+        const data = await fs.readFile(unknownBinaryPath, { encoding: 'hex' })
+        console.log(data.slice(0, 1000))
+      }
+    }
   } catch (error) {
     spinner.fail(getErrorMessage(error))
   }
@@ -134,4 +148,30 @@ type AudioComponent = {
   manufacturer: string
   name: string
   type: AUComponentType
+}
+
+/**
+ * MetaData for a Logic project alternative.
+ */
+type MetaData = {
+  SamplerInstrumentsFiles: unknown[]
+  isTimeCodeBased: boolean
+  SongKey: string
+  AudioFiles: string[]
+  NumberOfTracks: number
+  VideoFiles: unknown[]
+  PlaybackFiles: unknown[]
+  SampleRate: number
+  UnusedAudioFiles: unknown[]
+  AlchemyFiles: unknown[]
+  SongGenderKey: string
+  ImpulsResponsesFiles: unknown[]
+  FrameRateIndex: number
+  SongSignatureNumerator: number
+  BeatsPerMinute: number
+  SignatureKey: number
+  Version: number
+  SongSignatureDenominator: number
+  SurroundFormatIndex: number
+  UltrabeatFiles: unknown[]
 }
